@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+  labels:
+    app: words-db
+spec:
+  selector:
+    matchLabels:
+      app: words-db
+  template:
+    metadata:
+      labels:
+        app: words-db
+    spec:
+      containers:
+      - name: db
+        image: dockersamples/k8s-wordsmith-db
+        ports:
+        - containerPort: 5432
+          name: db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: words
+  labels:
+    app: words-api
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: words-api
+  template:
+    metadata:
+      labels:
+        app: words-api
+    spec:
+      containers:
+      - name: words
+        image: dockersamples/k8s-wordsmith-api
+        ports:
+        - containerPort: 8080
+          name: api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    app: words-web
+spec:
+  selector:
+    matchLabels:
+      app: words-web
+  template:
+    metadata:
+      labels:
+        app: words-web
+    spec:
+      containers:
+      - name: web
+        image: dockersamples/k8s-wordsmith-web
+        ports:
+        - containerPort: 80
+          name: words-web
