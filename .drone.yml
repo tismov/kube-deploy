@@ -1,15 +1,16 @@
 kind: pipeline
 name: default
 
-steps:
-- name: build
-  image: postgres:10.0-alpine
-  commands:
-    - cp db/words.sql /docker-entrypoint-initdb.d/
+# steps:
+# - name: build
+#   image: postgres:10.0-alpine
+#   commands:
+#     - cp db/words.sql /docker-entrypoint-initdb.d/
 
 - name: docker  
   image: plugins/docker
   settings:
+    dockerfile: db/
     username:
       from_secret: hub_username
     password:
