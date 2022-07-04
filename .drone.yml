@@ -10,7 +10,7 @@ steps:
 - name: docker  
   image: plugins/docker
   settings:
-    dockerfile: db/
+    dockerfile: db/Dockerfile
     username:
       from_secret: hub_username
     password:
