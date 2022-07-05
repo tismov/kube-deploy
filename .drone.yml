@@ -7,21 +7,6 @@ name: default
 #   commands:
 #     - cp db/words.sql /docker-entrypoint-initdb.d/
 steps:  
-# - name: docker  
-#   image: plugins/docker
-#   settings:
-#     dockerfile: db/Dockerfile
-#     username:
-#       from_secret: hub_username
-#     password:
-#       from_secret: hub_password
-#     repo: turik207/kube-db
-- name: build
-  image: postgres:10.0-alpine
-  commands:
-    - cp db/words.sql /docker-entrypoint-initdb.d/
-    - echo -n "5.2.6,5.2.4" > .tags
-
 - name: docker  
   image: plugins/docker
   settings:
@@ -31,3 +16,18 @@ steps:
     password:
       from_secret: hub_password
     repo: turik207/kube-db
+# - name: build
+#   image: postgres:10.0-alpine
+#   commands:
+#     - cp db/words.sql /docker-entrypoint-initdb.d/
+#     - echo -n "5.2.6,5.2.4" > .tags
+
+# - name: docker  
+#   image: plugins/docker
+#   settings:
+#     dockerfile: db/Dockerfile
+#     username:
+#       from_secret: hub_username
+#     password:
+#       from_secret: hub_password
+#     repo: turik207/kube-db
