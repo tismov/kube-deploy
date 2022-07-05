@@ -13,12 +13,22 @@ steps:
 #       from_secret: hub_password
 #     repo: turik207/kube-db
 
-- name: docker-web  
+# - name: docker-web  
+#   image: plugins/docker
+#   settings:
+#     dockerfile: web/Dockerfile
+#     username:
+#       from_secret: hub_username
+#     password:
+#       from_secret: hub_password
+#     repo: turik207/kube-web
+
+- name: docker-words
   image: plugins/docker
   settings:
-    dockerfile: web/Dockerfile
+    dockerfile: words/Dockerfile
     username:
       from_secret: hub_username
     password:
       from_secret: hub_password
-    repo: turik207/kube-web
+    repo: turik207/kube-words
