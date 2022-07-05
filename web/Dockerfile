@@ -1,7 +1,7 @@
 # BUILD
 FROM golang:alpine as builder
 
-COPY dispatcher.go .
+COPY web/dispatcher.go .
 RUN go build dispatcher.go
 
 # RUN
@@ -11,4 +11,4 @@ EXPOSE 80
 CMD ["/dispatcher"]
 
 COPY --from=builder /go/dispatcher /
-COPY static /static/
+COPY web/static /static/
