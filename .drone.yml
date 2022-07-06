@@ -4,6 +4,36 @@ name: default
 
 steps:  
 
+  - name: create docker-db
+    image: plugins/docker
+    settings:
+      dockerfile: db/Dockerfile
+      username:
+        from_secret: hub_username
+      password:
+        from_secret: hub_password
+      repo: turik207/kube-db
+
+  - name: create docker-web  
+    image: plugins/docker
+    settings:
+      dockerfile: web/Dockerfile
+      username:
+        from_secret: hub_username
+      password:
+        from_secret: hub_password
+      repo: turik207/kube-web
+
+  - name: create docker-words
+    image: plugins/docker
+    settings:
+      dockerfile: words/Dockerfile
+      username:
+        from_secret: hub_username
+      password:
+        from_secret: hub_password
+      repo: turik207/kube-words
+
   - name: copy from configfile s3
     image: amazon/aws-cli
     environment:
@@ -17,7 +47,7 @@ steps:
       - aws --version
       - aws s3 cp s3://k8s-kubeconfig-i7v/config ./
   
-  - name: kubectl
+  - name: helm install dep
     image: turik207/helm:3.9.0
     environment:
       keyid:
@@ -29,35 +59,4 @@ steps:
       - export $key
       - export KUBECONFIG=./config
       - helm version
-
-
-  # - name: docker-db
-  #   image: plugins/docker
-  #   settings:
-  #     dockerfile: db/Dockerfile
-  #     username:
-  #       from_secret: hub_username
-  #     password:
-  #       from_secret: hub_password
-  #     repo: turik207/kube-db
-
-  # - name: docker-web  
-  #   image: plugins/docker
-  #   settings:
-  #     dockerfile: web/Dockerfile
-  #     username:
-  #       from_secret: hub_username
-  #     password:
-  #       from_secret: hub_password
-  #     repo: turik207/kube-web
-
-  # - name: docker-words
-  #   image: plugins/docker
-  #   settings:
-  #     dockerfile: words/Dockerfile
-  #     username:
-  #       from_secret: hub_username
-  #     password:
-  #       from_secret: hub_password
-  #     repo: turik207/kube-words
-
+      - helm install app .
