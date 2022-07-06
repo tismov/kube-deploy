@@ -1,0 +1,2 @@
+serviceport : 8081
+replicaCount: 3

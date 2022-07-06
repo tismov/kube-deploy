@@ -3,32 +3,61 @@ name: default
 
 
 steps:  
-# - name: docker-db
-#   image: plugins/docker
-#   settings:
-#     dockerfile: db/Dockerfile
-#     username:
-#       from_secret: hub_username
-#     password:
-#       from_secret: hub_password
-#     repo: turik207/kube-db
 
-# - name: docker-web  
-#   image: plugins/docker
-#   settings:
-#     dockerfile: web/Dockerfile
-#     username:
-#       from_secret: hub_username
-#     password:
-#       from_secret: hub_password
-#     repo: turik207/kube-web
+  - name: copy from configfile s3
+    image: amazon/aws-cli
+    environment:
+      accesskey:
+        from_secret: seckeyid
+      secretkey:
+        from_secret: seckey
+    commands:
+      - export $accesskey
+      - export $secretkey
+      - aws --version
+      - aws s3 cp s3://k8s-kubeconfig-i7v/config ./
+  
+  - name: kubectl
+    image: turik207/helm:3.9.0
+    environment:
+      keyid:
+        from_secret: keyid
+      key:
+        from_secret: key
+    commands:
+      - export $keyid
+      - export $key
+      - export KUBECONFIG=./config
+      - helm version
 
-- name: docker-words
-  image: plugins/docker
-  settings:
-    dockerfile: words/Dockerfile
-    username:
-      from_secret: hub_username
-    password:
-      from_secret: hub_password
-    repo: turik207/kube-words
+
+  # - name: docker-db
+  #   image: plugins/docker
+  #   settings:
+  #     dockerfile: db/Dockerfile
+  #     username:
+  #       from_secret: hub_username
+  #     password:
+  #       from_secret: hub_password
+  #     repo: turik207/kube-db
+
+  # - name: docker-web  
+  #   image: plugins/docker
+  #   settings:
+  #     dockerfile: web/Dockerfile
+  #     username:
+  #       from_secret: hub_username
+  #     password:
+  #       from_secret: hub_password
+  #     repo: turik207/kube-web
+
+  # - name: docker-words
+  #   image: plugins/docker
+  #   settings:
+  #     dockerfile: words/Dockerfile
+  #     username:
+  #       from_secret: hub_username
+  #     password:
+  #       from_secret: hub_password
+  #     repo: turik207/kube-words
+
